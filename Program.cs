@@ -2,30 +2,22 @@
 
 class Program
 {
-    // Variáveis globais para armazenar dados do jogador e estatísticas
     static string nomeJogador = "";
     static int vitorias = 0;
     static int derrotas = 0;
     static int empates = 0;
 
-    // MÉTODO PRINCIPAL - Ponto de entrada do programa
-    // Conceito: Método Main é obrigatório em aplicações C#
     static void Main()
     {
-        // Configuração para exibir emojis corretamente
         Console.OutputEncoding = System.Text.Encoding.UTF8;
 
-        Console.WriteLine("😀 Olá! Vamos jogar Jokempo?");
+        Console.WriteLine("Olá! Vamos jogar Jokempo?");
 
-        // Chamada do método para gravar nome do jogador
         GravarNomeJogador();
 
-        // Chamada do método do menu principal
         MenuPrincipal();
     }
 
-    // MÉTODO PARA GRAVAR NOME DO JOGADOR
-    // Conceito: Método sem retorno (void) que executa uma ação específica
     static void GravarNomeJogador()
     {
         Console.Write("\nDigite seu nome: ");
@@ -33,9 +25,6 @@ class Program
         Console.WriteLine($"Bem-vindo(a), {nomeJogador}!");
     }
 
-    // MÉTODO DO MENU PRINCIPAL
-    // Conceito: Utiliza DO-WHILE para garantir que o menu apareça pelo menos uma vez
-    // e SWITCH para navegação entre opções
     static void MenuPrincipal()
     {
         int opcao;
@@ -50,16 +39,13 @@ class Program
             Console.WriteLine("4 - Sair");
             Console.Write("Escolha: ");
 
-            // Chamada do método de validação
             opcao = ValidarEntrada(Console.ReadLine());
 
-            // ESTRUTURA SWITCH
-            // Conceito: Switch para múltiplas condições (mais organizado que vários if/else)
             switch (opcao)
             {
                 case 1:
                     Jogar();
-                    break; // BREAK - interrompe a execução do switch
+                    break; 
                 case 2:
                     ImprimirEstatisticas();
                     break;
@@ -69,37 +55,29 @@ class Program
                 case 4:
                     Console.WriteLine($"\n👋 Até mais, {nomeJogador}!");
                     break;
-                default: // Caso padrão (nenhuma opção válida)
+                default: 
                     Console.WriteLine("Opção inválida!");
                     break;
             }
 
-            // Aguarda tecla ser pressionada antes de continuar (exceto se for sair)
             if (opcao != 4)
             {
                 Console.WriteLine("\nPressione qualquer tecla para continuar...");
                 Console.ReadKey();
             }
 
-        } while (opcao != 4); // WHILE - condição para repetir o menu
+        } while (opcao != 4); 
     }
 
-    // MÉTODO DE VALIDAÇÃO DE ENTRADA
-    // Conceito: Método com RETORNO (int) e parâmetro
-    // Utiliza TRY PARSE para validar se a entrada é um número válido
     static int ValidarEntrada(string entrada)
     {
-        // int.TryParse tenta converter e retorna true/false
-        // OUT - palavra-chave que retorna o valor convertido
         if (int.TryParse(entrada, out int resultado))
         {
-            return resultado; // RETURN - retorna o valor válido
+            return resultado; 
         }
-        return -1; // RETURN - retorna -1 indicando valor inválido
+        return -1; 
     }
 
-    // MÉTODO PARA JOGAR
-    // Conceito: Organização do jogo principal com DO-WHILE para múltiplas partidas
     static void Jogar()
     {
         char continuar;
@@ -115,50 +93,42 @@ class Program
 
             var opcao = Console.ReadKey().KeyChar;
 
-            // Gera jogada aleatória do computador
-            // Random - classe para gerar números aleatórios
-            var opcaoPC = new Random().Next(3); // Gera 0, 1 ou 2
+            var opcaoPC = new Random().Next(3); 
 
-            // Processa a jogada chamando outro método
             ProcessarJogada(opcao, opcaoPC);
 
             Console.WriteLine("\n\nQuer jogar de novo?");
             Console.WriteLine("1 - Sim | 0 - Não");
             continuar = Console.ReadKey().KeyChar;
 
-        } while (continuar == '1'); // Continua enquanto jogador digitar 1
+        } while (continuar == '1'); 
     }
 
-    // MÉTODO PARA PROCESSAR A JOGADA
-    // Conceito: Utiliza SWITCH para determinar as jogadas
     static void ProcessarJogada(char opcaoJogador, int opcaoPC)
     {
         bool vitoria = false;
         string nomeJogadaJogador = "";
         string nomeJogadaPC = "";
 
-        // SWITCH para jogada do jogador
-        // Conceito: Switch com case para cada opção possível
         switch (opcaoJogador)
         {
             case '0':
                 nomeJogadaJogador = "Pedra ✊";
-                vitoria = (opcaoPC == 2); // Pedra ganha de Tesoura (2)
-                break; // BREAK - necessário em cada case
+                vitoria = (opcaoPC == 2); 
+                break; 
             case '1':
                 nomeJogadaJogador = "Papel ✋";
-                vitoria = (opcaoPC == 0); // Papel ganha de Pedra (0)
+                vitoria = (opcaoPC == 0); 
                 break;
             case '2':
                 nomeJogadaJogador = "Tesoura ✌";
-                vitoria = (opcaoPC == 1); // Tesoura ganha de Papel (1)
+                vitoria = (opcaoPC == 1); 
                 break;
-            default: // Caso o jogador digite algo diferente de 0,1,2
+            default: 
                 Console.WriteLine("\nOpção inválida!");
-                return; // RETURN - encerra o método imediatamente
+                return; 
         }
 
-        // SWITCH para jogada do computador
         switch (opcaoPC)
         {
             case 0:
@@ -172,42 +142,33 @@ class Program
                 break;
         }
 
-        // Exibe as jogadas
         Console.WriteLine($"\n{nomeJogador} jogou: {nomeJogadaJogador}");
         Console.WriteLine($"Computador jogou: {nomeJogadaPC}");
 
-        // Chama método para determinar o resultado
         DeterminarResultado(opcaoJogador, opcaoPC, vitoria);
     }
 
-    // MÉTODO PARA DETERMINAR RESULTADO
-    // Conceito: Utiliza ESTRUTURAS CONDICIONAIS (IF/ELSE)
     static void DeterminarResultado(char opcaoJogador, int opcaoPC, bool vitoria)
     {
-        // Converte char para int para comparação
         int jogadaJogador = int.Parse(opcaoJogador.ToString());
 
-        // ESTRUTURA IF/ELSE
-        // Conceito: Tomada de decisão baseada em condições
         if (jogadaJogador == opcaoPC)
         {
             Console.WriteLine("\n😀 Legal! Nós empatamos!");
-            empates++; // Incrementa estatística de empates
+            empates++; 
         }
-        else if (vitoria) // ELSE IF - condição adicional
+        else if (vitoria) 
         {
             Console.WriteLine($"\n😀 Parabéns, {nomeJogador}! Você venceu.");
-            vitorias++; // Incrementa estatística de vitórias
+            vitorias++; 
         }
-        else // ELSE - caso todas as condições anteriores sejam falsas
+        else 
         {
             Console.WriteLine("\n😀 Haha, eu venci! Não foi dessa vez.");
-            derrotas++; // Incrementa estatística de derrotas
+            derrotas++; 
         }
     }
 
-    // MÉTODO PARA IMPRIMIR ESTATÍSTICAS
-    // Conceito: Método simples para exibir dados acumulados
     static void ImprimirEstatisticas()
     {
         Console.Clear();
@@ -219,8 +180,6 @@ class Program
         Console.WriteLine("====================");
     }
 
-    // MÉTODO PARA MUDAR DE JOGADOR
-    // Conceito: PARÂMETRO OPCIONAL com valor padrão
     static void MudarJogador(string mensagem = "Digite o novo nome")
     {
         Console.Clear();
@@ -231,7 +190,6 @@ class Program
         Console.WriteLine($"\n{mensagem}: ");
         nomeJogador = Console.ReadLine();
 
-        // Reseta estatísticas para o novo jogador
         vitorias = 0;
         derrotas = 0;
         empates = 0;
